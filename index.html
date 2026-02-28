@@ -21,181 +21,165 @@
       padding: 1rem 2rem;
       box-shadow: 0 2px 6px rgba(0,0,0,.2);
     }
-
     header h1 { font-size: 1.5rem; font-weight: 700; }
 
     .container {
       display: grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: 380px 1fr;
       gap: 1.5rem;
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 1.5rem auto;
       padding: 0 1rem;
     }
-
-    @media (max-width: 800px) {
-      .container { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 860px) { .container { grid-template-columns: 1fr; } }
 
     .panel {
       background: #fff;
       border-radius: 10px;
-      padding: 1.5rem;
+      padding: 1.25rem 1.5rem;
       box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      margin-bottom: 1rem;
     }
+    .panel:last-child { margin-bottom: 0; }
 
     .panel h2 {
-      font-size: 1rem;
+      font-size: .95rem;
       font-weight: 700;
-      margin-bottom: 1rem;
+      margin-bottom: .9rem;
       color: #2b6cb0;
       border-bottom: 2px solid #bee3f8;
-      padding-bottom: .4rem;
+      padding-bottom: .35rem;
     }
 
     label {
       display: block;
-      font-size: .82rem;
+      font-size: .8rem;
       font-weight: 600;
-      margin-bottom: .25rem;
+      margin-bottom: .2rem;
       color: #4a5568;
     }
 
     input[type="text"], input[type="number"] {
       width: 100%;
-      padding: .45rem .7rem;
+      padding: .4rem .65rem;
       border: 1.5px solid #cbd5e0;
       border-radius: 6px;
-      font-size: .9rem;
+      font-size: .88rem;
       transition: border-color .2s;
-      margin-bottom: .75rem;
+      margin-bottom: .65rem;
     }
-
     input[type="text"]:focus, input[type="number"]:focus {
-      outline: none;
-      border-color: #3182ce;
+      outline: none; border-color: #3182ce;
     }
 
-    .row { display: flex; gap: .75rem; }
+    .row { display: flex; gap: .65rem; }
     .row > div { flex: 1; }
 
+    /* Dataset settings cards */
+    .ds-card {
+      border-radius: 8px;
+      padding: .85rem 1rem;
+      margin-bottom: .75rem;
+    }
+    .ds-card.ds1 { background: #ebf8ff; border: 1.5px solid #90cdf4; }
+    .ds-card.ds2 { background: #fff5f0; border: 1.5px solid #fbb6a0; }
+
+    .ds-card-header {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: .65rem;
+    }
+    .ds-badge {
+      display: inline-block;
+      padding: .15rem .5rem;
+      border-radius: 99px;
+      font-size: .72rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .ds1 .ds-badge { background: #3182ce; }
+    .ds2 .ds-badge { background: #e53e3e; }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: .65rem;
+    }
+    .color-row label { margin: 0; }
+    input[type="color"] {
+      width: 34px; height: 34px;
+      border: 1.5px solid #cbd5e0;
+      border-radius: 6px;
+      padding: 2px;
+      cursor: pointer;
+    }
+
+    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: .4rem;
-      padding: .5rem 1.1rem;
+      gap: .35rem;
+      padding: .45rem 1rem;
       border: none;
       border-radius: 6px;
-      font-size: .88rem;
+      font-size: .85rem;
       font-weight: 600;
       cursor: pointer;
       transition: background .2s, transform .1s;
     }
     .btn:active { transform: scale(.97); }
-
-    .btn-primary { background: #3182ce; color: #fff; width: 100%; margin-top: .25rem; }
+    .btn-primary { background: #3182ce; color: #fff; width: 100%; margin-top: .2rem; }
     .btn-primary:hover { background: #2b6cb0; }
-
-    .btn-danger { background: #fc8181; color: #fff; padding: .3rem .6rem; font-size: .78rem; }
+    .btn-ds1 { background: #3182ce; color: #fff; width: 100%; margin-top: .2rem; }
+    .btn-ds1:hover { background: #2b6cb0; }
+    .btn-ds2 { background: #e53e3e; color: #fff; width: 100%; margin-top: .2rem; }
+    .btn-ds2:hover { background: #c53030; }
+    .btn-danger { background: #fc8181; color: #fff; padding: .25rem .55rem; font-size: .75rem; }
     .btn-danger:hover { background: #e53e3e; }
-
-    .btn-outline {
-      background: transparent;
-      border: 1.5px solid #3182ce;
-      color: #3182ce;
-    }
+    .btn-outline { background: transparent; border: 1.5px solid #3182ce; color: #3182ce; }
     .btn-outline:hover { background: #ebf8ff; }
-
     .btn-success { background: #38a169; color: #fff; }
     .btn-success:hover { background: #2f855a; }
 
-    /* Data table */
-    .data-table-wrapper {
-      max-height: 260px;
-      overflow-y: auto;
-      margin: .75rem 0;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-    }
-
-    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
-    thead { position: sticky; top: 0; background: #ebf8ff; }
-    th, td {
-      padding: .4rem .6rem;
-      text-align: right;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    th { font-weight: 700; color: #2b6cb0; }
-    td:first-child, th:first-child { text-align: center; color: #718096; }
-    tbody tr:hover { background: #f7fafc; }
-
-    .empty-msg {
-      text-align: center;
-      padding: 1.5rem;
-      color: #a0aec0;
-      font-size: .85rem;
-    }
-
-    /* Chart area */
-    .chart-panel {
+    /* Dataset selector toggle */
+    .ds-selector {
       display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .chart-wrapper {
-      position: relative;
-      background: #fff;
-      border-radius: 10px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-      flex: 1;
-    }
-
-    canvas { width: 100% !important; }
-
-    .actions {
-      display: flex;
-      gap: .75rem;
-      flex-wrap: wrap;
-    }
-
-    .section { margin-bottom: .75rem; }
-
-    /* Color picker */
-    input[type="color"] {
-      width: 38px; height: 38px;
+      border-radius: 7px;
+      overflow: hidden;
       border: 1.5px solid #cbd5e0;
-      border-radius: 6px;
-      padding: 2px;
+      margin-bottom: .9rem;
+    }
+    .ds-sel-btn {
+      flex: 1;
+      padding: .4rem .5rem;
+      border: none;
+      background: #f7fafc;
+      font-size: .82rem;
+      font-weight: 600;
       cursor: pointer;
-      vertical-align: middle;
+      transition: background .15s, color .15s;
+      color: #718096;
     }
+    .ds-sel-btn.active-ds1 { background: #3182ce; color: #fff; }
+    .ds-sel-btn.active-ds2 { background: #e53e3e; color: #fff; }
 
-    .color-row {
-      display: flex;
-      align-items: center;
-      gap: .6rem;
-      margin-bottom: .75rem;
-    }
-    .color-row label { margin: 0; }
-
-    /* Input tabs */
+    /* Input mode tabs */
     .tab-bar {
       display: flex;
-      gap: 0;
-      margin-bottom: 1rem;
-      border-bottom: 2px solid #bee3f8;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: .85rem;
     }
     .tab-btn {
       flex: 1;
-      padding: .45rem .5rem;
+      padding: .4rem .5rem;
       background: none;
       border: none;
       border-bottom: 3px solid transparent;
       margin-bottom: -2px;
-      font-size: .85rem;
+      font-size: .82rem;
       font-weight: 600;
       color: #718096;
       cursor: pointer;
@@ -207,34 +191,84 @@
 
     textarea {
       width: 100%;
-      height: 140px;
-      padding: .5rem .7rem;
+      height: 120px;
+      padding: .45rem .65rem;
       border: 1.5px solid #cbd5e0;
       border-radius: 6px;
-      font-size: .82rem;
+      font-size: .8rem;
       font-family: monospace;
       resize: vertical;
-      margin-bottom: .5rem;
+      margin-bottom: .45rem;
       transition: border-color .2s;
     }
     textarea:focus { outline: none; border-color: #3182ce; }
 
     .hint {
-      font-size: .76rem;
+      font-size: .74rem;
       color: #718096;
-      margin-bottom: .75rem;
-      line-height: 1.5;
+      margin-bottom: .65rem;
+      line-height: 1.55;
     }
 
     .bulk-result {
-      font-size: .8rem;
-      padding: .35rem .6rem;
+      font-size: .78rem;
+      padding: .3rem .55rem;
       border-radius: 5px;
-      margin-bottom: .5rem;
+      margin-bottom: .45rem;
       display: none;
     }
     .bulk-result.ok  { background: #c6f6d5; color: #276749; }
     .bulk-result.err { background: #fed7d7; color: #9b2c2c; }
+
+    /* Data table */
+    .data-table-wrapper {
+      max-height: 240px;
+      overflow-y: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      margin: .65rem 0;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    thead { position: sticky; top: 0; }
+    th, td { padding: .35rem .55rem; text-align: right; border-bottom: 1px solid #e2e8f0; }
+    td:first-child, th:first-child { text-align: center; }
+
+    .thead-ds1 { background: #ebf8ff; }
+    .thead-ds1 th { color: #2b6cb0; }
+    .thead-ds2 { background: #fff5f0; }
+    .thead-ds2 th { color: #c53030; }
+
+    .section-label-row td {
+      background: #f7fafc;
+      font-weight: 700;
+      font-size: .75rem;
+      color: #718096;
+      text-align: left;
+      padding: .3rem .55rem;
+    }
+
+    tbody tr:hover { background: #f7fafc; }
+
+    .empty-msg {
+      text-align: center;
+      padding: 1.25rem;
+      color: #a0aec0;
+      font-size: .82rem;
+    }
+
+    /* Right panel */
+    .chart-panel { display: flex; flex-direction: column; gap: 1rem; }
+    .chart-wrapper {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+    canvas { width: 100% !important; }
+
+    .actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+    .left-col { display: flex; flex-direction: column; }
   </style>
 </head>
 <body>
@@ -244,84 +278,116 @@
 </header>
 
 <div class="container">
-  <!-- Left: control panel -->
-  <aside class="panel">
+  <!-- ===== Left panel ===== -->
+  <div class="left-col">
 
-    <h2>グラフ設定</h2>
-    <div class="section">
+    <!-- Graph settings -->
+    <div class="panel">
+      <h2>グラフ設定</h2>
       <label>グラフタイトル</label>
-      <input type="text" id="chartTitle" placeholder="例: 身長と体重の関係" />
+      <input type="text" id="chartTitle" placeholder="例: クロマトグラフィー分析" />
       <label>X 軸ラベル</label>
-      <input type="text" id="xLabel" placeholder="例: 身長 (cm)" />
-      <label>Y 軸ラベル</label>
-      <input type="text" id="yLabel" placeholder="例: 体重 (kg)" />
-    </div>
+      <input type="text" id="xLabel" placeholder="例: フラクション番号" />
 
-    <div class="color-row">
-      <input type="color" id="dotColor" value="#3182ce" />
-      <label>点の色</label>
-    </div>
-
-    <h2>データ入力</h2>
-    <div class="tab-bar">
-      <button class="tab-btn active" data-tab="single">1件ずつ</button>
-      <button class="tab-btn"        data-tab="bulk">一括入力</button>
-    </div>
-
-    <!-- Single entry -->
-    <div class="tab-pane active" id="tab-single">
-      <div class="row">
-        <div>
-          <label>X 値</label>
-          <input type="number" id="inputX" placeholder="0" step="any" />
+      <!-- Dataset 1 -->
+      <div class="ds-card ds1">
+        <div class="ds-card-header">
+          <span class="ds-badge">データセット 1</span>
+          <span style="font-size:.8rem;font-weight:600;color:#2b6cb0">（左 Y 軸）</span>
         </div>
-        <div>
-          <label>Y 値</label>
-          <input type="number" id="inputY" placeholder="0" step="any" />
+        <label>データセット名</label>
+        <input type="text" id="ds1Name" placeholder="例: タンパク質 A 活性" />
+        <label>左 Y 軸ラベル</label>
+        <input type="text" id="y1Label" placeholder="例: 活性 (U/mL)" />
+        <div class="color-row">
+          <input type="color" id="color1" value="#3182ce" />
+          <label>点の色</label>
         </div>
       </div>
-      <div class="row">
-        <div>
-          <label>ラベル（任意）</label>
-          <input type="text" id="inputLabel" placeholder="例: サンプルA" />
-        </div>
-      </div>
-      <button class="btn btn-primary" id="addBtn">＋ データを追加</button>
-    </div>
 
-    <!-- Bulk entry -->
-    <div class="tab-pane" id="tab-bulk">
-      <p class="hint">
-        1行に 1点を入力してください。<br>
-        形式: <code>X,Y</code> または <code>X,Y,ラベル</code><br>
-        区切り: カンマ・タブ・スペースのいずれも可<br>
-        例） <code>170,65,Aさん</code>
-      </p>
-      <textarea id="bulkInput" placeholder="170,65,Aさん&#10;160,50,Bさん&#10;180,72"></textarea>
-      <div class="bulk-result" id="bulkResult"></div>
-      <div style="display:flex;gap:.5rem">
-        <button class="btn btn-primary" id="bulkAddBtn" style="flex:1">＋ 一括追加</button>
-        <button class="btn btn-outline" id="bulkReplaceBtn" style="flex:1">置き換え</button>
+      <!-- Dataset 2 -->
+      <div class="ds-card ds2">
+        <div class="ds-card-header">
+          <span class="ds-badge">データセット 2</span>
+          <span style="font-size:.8rem;font-weight:600;color:#c53030">（右 Y 軸）</span>
+        </div>
+        <label>データセット名</label>
+        <input type="text" id="ds2Name" placeholder="例: タンパク質 B 活性" />
+        <label>右 Y 軸ラベル</label>
+        <input type="text" id="y2Label" placeholder="例: 活性 (nmol/min)" />
+        <div class="color-row">
+          <input type="color" id="color2" value="#e53e3e" />
+          <label>点の色</label>
+        </div>
       </div>
     </div>
 
-    <div class="data-table-wrapper" id="tableWrapper">
-      <div class="empty-msg" id="emptyMsg">データがありません</div>
-      <table id="dataTable" style="display:none">
-        <thead>
-          <tr>
-            <th>#</th><th>X</th><th>Y</th><th>ラベル</th><th></th>
-          </tr>
-        </thead>
-        <tbody id="dataBody"></tbody>
-      </table>
+    <!-- Data input -->
+    <div class="panel">
+      <h2>データ入力</h2>
+
+      <!-- Dataset selector -->
+      <div class="ds-selector">
+        <button class="ds-sel-btn active-ds1" id="selDs1">データセット 1（左軸）</button>
+        <button class="ds-sel-btn" id="selDs2">データセット 2（右軸）</button>
+      </div>
+
+      <!-- Mode tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="single">1件ずつ</button>
+        <button class="tab-btn"        data-tab="bulk">一括入力</button>
+      </div>
+
+      <!-- Single entry -->
+      <div class="tab-pane active" id="tab-single">
+        <div class="row">
+          <div>
+            <label>X 値</label>
+            <input type="number" id="inputX" placeholder="0" step="any" />
+          </div>
+          <div>
+            <label>Y 値</label>
+            <input type="number" id="inputY" placeholder="0" step="any" />
+          </div>
+        </div>
+        <label>ラベル（任意）</label>
+        <input type="text" id="inputLabel" placeholder="例: Fr.5" />
+        <button class="btn btn-ds1" id="addBtn">＋ データを追加</button>
+      </div>
+
+      <!-- Bulk entry -->
+      <div class="tab-pane" id="tab-bulk">
+        <p class="hint">
+          1行に 1点。形式: <code>X,Y</code> または <code>X,Y,ラベル</code><br>
+          区切り: カンマ・タブ・スペースのいずれも可
+        </p>
+        <textarea id="bulkInput" placeholder="1,12.5,Fr.1&#10;2,34.8,Fr.2&#10;3,56.1"></textarea>
+        <div class="bulk-result" id="bulkResult"></div>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn btn-ds1" id="bulkAddBtn" style="flex:1">＋ 一括追加</button>
+          <button class="btn btn-outline" id="bulkReplaceBtn" style="flex:1">置き換え</button>
+        </div>
+      </div>
     </div>
 
-    <button class="btn btn-outline" id="clearBtn" style="width:100%;margin-top:.25rem">全て削除</button>
+    <!-- Data table -->
+    <div class="panel">
+      <h2>データ一覧</h2>
+      <div class="data-table-wrapper">
+        <div class="empty-msg" id="emptyMsg">データがありません</div>
+        <table id="dataTable" style="display:none">
+          <thead class="thead-ds1">
+            <tr><th>#</th><th>X</th><th>Y</th><th>ラベル</th><th></th></tr>
+          </thead>
+          <tbody id="dataBody"></tbody>
+        </table>
+      </div>
+      <button class="btn btn-outline" id="clearBtn" style="width:100%;margin-top:.25rem">全て削除</button>
+    </div>
 
-  </aside>
+  </div><!-- /left-col -->
 
-  <!-- Right: chart area -->
+  <!-- ===== Right panel ===== -->
   <div class="chart-panel">
     <div class="chart-wrapper">
       <canvas id="scatterChart"></canvas>
@@ -335,94 +401,172 @@
 
 <script>
   // ---- State ----
-  let points = [];
+  const datasets = { 1: [], 2: [] };
   let nextId = 1;
+  let activeDs = 1;
 
   // ---- Chart ----
   const ctx = document.getElementById('scatterChart').getContext('2d');
   const chart = new Chart(ctx, {
     type: 'scatter',
-    data: { datasets: [{ label: 'データ', data: [], pointRadius: 6, pointHoverRadius: 8 }] },
+    data: {
+      datasets: [
+        { label: 'データセット 1', data: [], yAxisID: 'y1', pointRadius: 6, pointHoverRadius: 8 },
+        { label: 'データセット 2', data: [], yAxisID: 'y2', pointRadius: 6, pointHoverRadius: 8 }
+      ]
+    },
     options: {
       responsive: true,
       plugins: {
         title: { display: true, text: '', font: { size: 16, weight: 'bold' }, color: '#2d3748' },
-        legend: { display: false },
+        legend: { display: true, position: 'top' },
         tooltip: {
           callbacks: {
-            label: ctx => {
-              const p = points.find(p => p.x === ctx.parsed.x && p.y === ctx.parsed.y);
-              const lbl = p && p.label ? ` (${p.label})` : '';
-              return `(${ctx.parsed.x}, ${ctx.parsed.y})${lbl}`;
+            label: function(c) {
+              const dsIdx = c.datasetIndex + 1;
+              const pts = datasets[dsIdx];
+              const p = pts.find(p => p.x === c.parsed.x && p.y === c.parsed.y);
+              const lbl = p && p.label ? ` [${p.label}]` : '';
+              return `${c.dataset.label}: (${c.parsed.x}, ${c.parsed.y})${lbl}`;
             }
           }
         }
       },
       scales: {
         x: { title: { display: true, text: '', font: { weight: '600' } } },
-        y: { title: { display: true, text: '', font: { weight: '600' } } }
+        y1: {
+          type: 'linear',
+          position: 'left',
+          title: { display: true, text: '', font: { weight: '600' } },
+          grid: { color: '#e2e8f0' }
+        },
+        y2: {
+          type: 'linear',
+          position: 'right',
+          title: { display: true, text: '', font: { weight: '600' } },
+          grid: { drawOnChartArea: false }
+        }
       }
     }
   });
 
   function refreshChart() {
-    const color = document.getElementById('dotColor').value;
-    chart.data.datasets[0].data = points.map(p => ({ x: p.x, y: p.y }));
-    chart.data.datasets[0].backgroundColor = color + 'cc';
-    chart.data.datasets[0].borderColor = color;
-    chart.options.plugins.title.text = document.getElementById('chartTitle').value || '';
-    chart.options.scales.x.title.text = document.getElementById('xLabel').value || '';
-    chart.options.scales.y.title.text = document.getElementById('yLabel').value || '';
+    const c1 = document.getElementById('color1').value;
+    const c2 = document.getElementById('color2').value;
+    const ds1Name = document.getElementById('ds1Name').value || 'データセット 1';
+    const ds2Name = document.getElementById('ds2Name').value || 'データセット 2';
+
+    chart.data.datasets[0].data            = datasets[1].map(p => ({ x: p.x, y: p.y }));
+    chart.data.datasets[0].label           = ds1Name;
+    chart.data.datasets[0].backgroundColor = c1 + 'bb';
+    chart.data.datasets[0].borderColor     = c1;
+
+    chart.data.datasets[1].data            = datasets[2].map(p => ({ x: p.x, y: p.y }));
+    chart.data.datasets[1].label           = ds2Name;
+    chart.data.datasets[1].backgroundColor = c2 + 'bb';
+    chart.data.datasets[1].borderColor     = c2;
+
+    chart.options.plugins.title.text    = document.getElementById('chartTitle').value || '';
+    chart.options.scales.x.title.text   = document.getElementById('xLabel').value || '';
+    chart.options.scales.y1.title.text  = document.getElementById('y1Label').value || '';
+    chart.options.scales.y1.title.color = c1;
+    chart.options.scales.y2.title.text  = document.getElementById('y2Label').value || '';
+    chart.options.scales.y2.title.color = c2;
+
     chart.update();
   }
 
   // ---- Table ----
   function refreshTable() {
-    const tbody = document.getElementById('dataBody');
-    const table = document.getElementById('dataTable');
-    const empty = document.getElementById('emptyMsg');
+    const tbody  = document.getElementById('dataBody');
+    const table  = document.getElementById('dataTable');
+    const empty  = document.getElementById('emptyMsg');
+    const total  = datasets[1].length + datasets[2].length;
 
-    tbody.innerHTML = '';
-    if (points.length === 0) {
+    if (total === 0) {
       table.style.display = 'none';
       empty.style.display = '';
       return;
     }
     table.style.display = '';
     empty.style.display = 'none';
+    tbody.innerHTML = '';
 
-    points.forEach((p, i) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${i + 1}</td>
-        <td>${p.x}</td>
-        <td>${p.y}</td>
-        <td>${p.label || ''}</td>
-        <td><button class="btn btn-danger" data-id="${p.id}">削除</button></td>
-      `;
-      tbody.appendChild(tr);
+    const ds1Name = document.getElementById('ds1Name').value || 'データセット 1';
+    const ds2Name = document.getElementById('ds2Name').value || 'データセット 2';
+
+    [[1, ds1Name], [2, ds2Name]].forEach(([dsNum, name]) => {
+      if (datasets[dsNum].length === 0) return;
+      // Section header row
+      const hdr = document.createElement('tr');
+      hdr.className = 'section-label-row';
+      hdr.innerHTML = `<td colspan="5">${name}（${dsNum === 1 ? '左' : '右'}軸）</td>`;
+      tbody.appendChild(hdr);
+
+      datasets[dsNum].forEach((p, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td>${p.x}</td>
+          <td>${p.y}</td>
+          <td>${p.label || ''}</td>
+          <td><button class="btn btn-danger" data-ds="${dsNum}" data-id="${p.id}">削除</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
     });
   }
 
-  // ---- Add ----
+  // ---- Dataset selector ----
+  function setActiveDs(n) {
+    activeDs = n;
+    const addBtn  = document.getElementById('addBtn');
+    const bulkAdd = document.getElementById('bulkAddBtn');
+    const s1 = document.getElementById('selDs1');
+    const s2 = document.getElementById('selDs2');
+
+    if (n === 1) {
+      s1.className = 'ds-sel-btn active-ds1';
+      s2.className = 'ds-sel-btn';
+      addBtn.className  = 'btn btn-ds1';
+      bulkAdd.className = 'btn btn-ds1';
+    } else {
+      s1.className = 'ds-sel-btn';
+      s2.className = 'ds-sel-btn active-ds2';
+      addBtn.className  = 'btn btn-ds2';
+      bulkAdd.className = 'btn btn-ds2';
+    }
+  }
+
+  document.getElementById('selDs1').addEventListener('click', () => setActiveDs(1));
+  document.getElementById('selDs2').addEventListener('click', () => setActiveDs(2));
+
+  // ---- Mode tabs ----
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ---- Single add ----
   document.getElementById('addBtn').addEventListener('click', () => {
     const xVal = document.getElementById('inputX').value.trim();
     const yVal = document.getElementById('inputY').value.trim();
     if (xVal === '' || yVal === '') { alert('X 値と Y 値を入力してください。'); return; }
-    const x = parseFloat(xVal);
-    const y = parseFloat(yVal);
+    const x = parseFloat(xVal), y = parseFloat(yVal);
     if (isNaN(x) || isNaN(y)) { alert('有効な数値を入力してください。'); return; }
 
-    points.push({ id: nextId++, x, y, label: document.getElementById('inputLabel').value.trim() });
+    datasets[activeDs].push({ id: nextId++, x, y, label: document.getElementById('inputLabel').value.trim() });
     document.getElementById('inputX').value = '';
     document.getElementById('inputY').value = '';
     document.getElementById('inputLabel').value = '';
     document.getElementById('inputX').focus();
-    refreshTable();
-    refreshChart();
+    refreshTable(); refreshChart();
   });
 
-  // Enter key shortcut
   ['inputX', 'inputY', 'inputLabel'].forEach(id => {
     document.getElementById(id).addEventListener('keydown', e => {
       if (e.key === 'Enter') document.getElementById('addBtn').click();
@@ -431,26 +575,85 @@
 
   // ---- Delete ----
   document.getElementById('dataBody').addEventListener('click', e => {
-    if (!e.target.dataset.id) return;
-    const id = parseInt(e.target.dataset.id, 10);
-    points = points.filter(p => p.id !== id);
-    refreshTable();
-    refreshChart();
+    const btn = e.target.closest('[data-id]');
+    if (!btn) return;
+    const dsNum = parseInt(btn.dataset.ds, 10);
+    const id    = parseInt(btn.dataset.id,  10);
+    datasets[dsNum] = datasets[dsNum].filter(p => p.id !== id);
+    refreshTable(); refreshChart();
   });
 
   // ---- Clear all ----
   document.getElementById('clearBtn').addEventListener('click', () => {
-    if (points.length === 0) return;
+    if (datasets[1].length + datasets[2].length === 0) return;
     if (confirm('全てのデータを削除しますか？')) {
-      points = [];
-      refreshTable();
-      refreshChart();
+      datasets[1] = []; datasets[2] = [];
+      refreshTable(); refreshChart();
     }
   });
 
+  // ---- Bulk parse ----
+  function parseBulk(text) {
+    const added = [], errors = [];
+    text.split('\n').forEach((line, i) => {
+      const raw = line.trim();
+      if (!raw) return;
+      const parts = raw.split(/[,\t ]+/);
+      const x = parseFloat(parts[0]), y = parseFloat(parts[1]);
+      if (isNaN(x) || isNaN(y)) { errors.push(i + 1); return; }
+      added.push({ id: nextId++, x, y, label: (parts[2] || '').trim() });
+    });
+    return { added, errors };
+  }
+
+  function showBulkResult(added, errors) {
+    const el = document.getElementById('bulkResult');
+    el.style.display = '';
+    if (errors.length === 0) {
+      el.className = 'bulk-result ok';
+      el.textContent = `${added.length} 件を追加しました。`;
+    } else {
+      el.className = 'bulk-result err';
+      el.textContent = `${added.length} 件追加。${errors.length} 行をスキップ（行番号: ${errors.join(', ')}）`;
+    }
+  }
+
+  document.getElementById('bulkAddBtn').addEventListener('click', () => {
+    const text = document.getElementById('bulkInput').value;
+    const { added, errors } = parseBulk(text);
+    if (added.length === 0 && errors.length === 0) {
+      const el = document.getElementById('bulkResult');
+      el.className = 'bulk-result err'; el.textContent = 'データが入力されていません。'; el.style.display = '';
+      return;
+    }
+    datasets[activeDs].push(...added);
+    refreshTable(); refreshChart();
+    showBulkResult(added, errors);
+    if (added.length > 0) document.getElementById('bulkInput').value = '';
+  });
+
+  document.getElementById('bulkReplaceBtn').addEventListener('click', () => {
+    const text = document.getElementById('bulkInput').value;
+    const { added, errors } = parseBulk(text);
+    if (added.length === 0) {
+      const el = document.getElementById('bulkResult');
+      el.className = 'bulk-result err';
+      el.textContent = errors.length ? '有効なデータがありません。' : 'データが入力されていません。';
+      el.style.display = ''; return;
+    }
+    datasets[activeDs] = added;
+    refreshTable(); refreshChart();
+    showBulkResult(added, errors);
+    if (added.length > 0) document.getElementById('bulkInput').value = '';
+  });
+
   // ---- Live setting updates ----
-  ['chartTitle', 'xLabel', 'yLabel', 'dotColor'].forEach(id => {
+  ['chartTitle','xLabel','y1Label','y2Label','ds1Name','ds2Name','color1','color2'].forEach(id => {
     document.getElementById(id).addEventListener('input', refreshChart);
+  });
+  // Also refresh table when dataset names change (affects section headers)
+  ['ds1Name','ds2Name'].forEach(id => {
+    document.getElementById(id).addEventListener('input', refreshTable);
   });
 
   // ---- Download ----
@@ -463,82 +666,19 @@
 
   // ---- CSV Export ----
   document.getElementById('csvExportBtn').addEventListener('click', () => {
-    if (points.length === 0) { alert('エクスポートするデータがありません。'); return; }
-    const rows = [['X', 'Y', 'ラベル'], ...points.map(p => [p.x, p.y, p.label])];
-    const csv = rows.map(r => r.join(',')).join('\n');
+    const total = datasets[1].length + datasets[2].length;
+    if (total === 0) { alert('エクスポートするデータがありません。'); return; }
+    const ds1Name = document.getElementById('ds1Name').value || 'データセット1';
+    const ds2Name = document.getElementById('ds2Name').value || 'データセット2';
+    const rows = [['データセット', 'X', 'Y', 'ラベル']];
+    datasets[1].forEach(p => rows.push([ds1Name, p.x, p.y, p.label]));
+    datasets[2].forEach(p => rows.push([ds2Name, p.x, p.y, p.label]));
+    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'scatter_data.csv';
     a.click();
-  });
-
-  // ---- Tabs ----
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-    });
-  });
-
-  // ---- Bulk parse ----
-  function parseBulk(text) {
-    const added = [], errors = [];
-    text.split('\n').forEach((line, i) => {
-      const raw = line.trim();
-      if (!raw) return;
-      const parts = raw.split(/[,\t ]+/);
-      const x = parseFloat(parts[0]);
-      const y = parseFloat(parts[1]);
-      if (isNaN(x) || isNaN(y)) { errors.push(i + 1); return; }
-      added.push({ id: nextId++, x, y, label: (parts[2] || '').trim() });
-    });
-    return { added, errors };
-  }
-
-  function showBulkResult(added, errors) {
-    const el = document.getElementById('bulkResult');
-    if (errors.length === 0) {
-      el.className = 'bulk-result ok';
-      el.textContent = `${added.length} 件を追加しました。`;
-    } else {
-      el.className = 'bulk-result err';
-      el.textContent = `${added.length} 件追加。${errors.length} 行をスキップ（行番号: ${errors.join(', ')}）`;
-    }
-    el.style.display = '';
-  }
-
-  document.getElementById('bulkAddBtn').addEventListener('click', () => {
-    const text = document.getElementById('bulkInput').value;
-    const { added, errors } = parseBulk(text);
-    if (added.length === 0 && errors.length === 0) {
-      document.getElementById('bulkResult').className = 'bulk-result err';
-      document.getElementById('bulkResult').textContent = 'データが入力されていません。';
-      document.getElementById('bulkResult').style.display = '';
-      return;
-    }
-    points.push(...added);
-    refreshTable(); refreshChart();
-    showBulkResult(added, errors);
-    if (added.length > 0) document.getElementById('bulkInput').value = '';
-  });
-
-  document.getElementById('bulkReplaceBtn').addEventListener('click', () => {
-    const text = document.getElementById('bulkInput').value;
-    const { added, errors } = parseBulk(text);
-    if (added.length === 0) {
-      document.getElementById('bulkResult').className = 'bulk-result err';
-      document.getElementById('bulkResult').textContent = errors.length ? '有効なデータがありません。' : 'データが入力されていません。';
-      document.getElementById('bulkResult').style.display = '';
-      return;
-    }
-    points = added;
-    nextId = points.length + 1;
-    refreshTable(); refreshChart();
-    showBulkResult(added, errors);
-    if (added.length > 0) document.getElementById('bulkInput').value = '';
   });
 
   // Initial render
