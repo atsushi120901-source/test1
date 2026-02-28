@@ -501,12 +501,12 @@
         { label: 'データセット 1', data: [], yAxisID: 'y1', pointRadius: 4, pointHoverRadius: 6 },
         // 1: DS2 scatter
         { label: 'データセット 2', data: [], yAxisID: 'y2', pointRadius: 4, pointHoverRadius: 6 },
-        // 2: DS1 PCHIP line
-        { type: 'line', label: '_curve1', data: [], yAxisID: 'y1',
-          pointRadius: 0, borderWidth: 2, tension: 0, hidden: true },
+        // 2: DS1 PCHIP line (scatter with showLine; avoids parser conflict)
+        { label: '_curve1', data: [], yAxisID: 'y1',
+          showLine: true, pointRadius: 0, borderWidth: 2, tension: 0, hidden: true },
         // 3: DS2 PCHIP line
-        { type: 'line', label: '_curve2', data: [], yAxisID: 'y2',
-          pointRadius: 0, borderWidth: 2, tension: 0, hidden: true }
+        { label: '_curve2', data: [], yAxisID: 'y2',
+          showLine: true, pointRadius: 0, borderWidth: 2, tension: 0, hidden: true }
       ]
     },
     options: {
