@@ -27,11 +27,23 @@
       display: grid;
       grid-template-columns: 380px 1fr;
       gap: 1.5rem;
-      max-width: 1280px;
+      max-width: 1400px;
       margin: 1.5rem auto;
       padding: 0 1rem;
+      align-items: start;
     }
     @media (max-width: 860px) { .container { grid-template-columns: 1fr; } }
+
+    /* Sticky left column */
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 1rem;
+      max-height: calc(100vh - 2rem);
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
 
     .panel {
       background: #fff;
@@ -75,7 +87,7 @@
     .row { display: flex; gap: .65rem; }
     .row > div { flex: 1; }
 
-    /* Dataset settings cards */
+    /* Dataset cards */
     .ds-card {
       border-radius: 8px;
       padding: .85rem 1rem;
@@ -105,15 +117,34 @@
       display: flex;
       align-items: center;
       gap: .5rem;
-      margin-bottom: .65rem;
+      margin-bottom: .5rem;
     }
     .color-row label { margin: 0; }
+
     input[type="color"] {
       width: 34px; height: 34px;
       border: 1.5px solid #cbd5e0;
       border-radius: 6px;
       padding: 2px;
       cursor: pointer;
+    }
+
+    /* Checkbox toggle */
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      margin-top: .5rem;
+      font-size: .8rem;
+      font-weight: 600;
+      color: #4a5568;
+      cursor: pointer;
+    }
+    .check-row input[type="checkbox"] {
+      width: 15px; height: 15px;
+      accent-color: #3182ce;
+      cursor: pointer;
+      margin: 0;
     }
 
     /* Buttons */
@@ -131,8 +162,6 @@
       transition: background .2s, transform .1s;
     }
     .btn:active { transform: scale(.97); }
-    .btn-primary { background: #3182ce; color: #fff; width: 100%; margin-top: .2rem; }
-    .btn-primary:hover { background: #2b6cb0; }
     .btn-ds1 { background: #3182ce; color: #fff; width: 100%; margin-top: .2rem; }
     .btn-ds1:hover { background: #2b6cb0; }
     .btn-ds2 { background: #e53e3e; color: #fff; width: 100%; margin-top: .2rem; }
@@ -144,7 +173,7 @@
     .btn-success { background: #38a169; color: #fff; }
     .btn-success:hover { background: #2f855a; }
 
-    /* Dataset selector toggle */
+    /* Dataset selector */
     .ds-selector {
       display: flex;
       border-radius: 7px;
@@ -222,7 +251,7 @@
 
     /* Data table */
     .data-table-wrapper {
-      max-height: 240px;
+      max-height: 220px;
       overflow-y: auto;
       border: 1px solid #e2e8f0;
       border-radius: 6px;
@@ -246,7 +275,6 @@
       text-align: left;
       padding: .3rem .55rem;
     }
-
     tbody tr:hover { background: #f7fafc; }
 
     .empty-msg {
@@ -256,19 +284,19 @@
       font-size: .82rem;
     }
 
-    /* Right panel */
+    /* Right panel: chart */
     .chart-panel { display: flex; flex-direction: column; gap: 1rem; }
+
     .chart-wrapper {
       background: #fff;
       border-radius: 10px;
       padding: 1.5rem;
       box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      position: relative;
+      height: 560px;
     }
-    canvas { width: 100% !important; }
 
     .actions { display: flex; gap: .75rem; flex-wrap: wrap; }
-
-    .left-col { display: flex; flex-direction: column; }
   </style>
 </head>
 <body>
@@ -281,7 +309,6 @@
   <!-- ===== Left panel ===== -->
   <div class="left-col">
 
-    <!-- Graph settings -->
     <div class="panel">
       <h2>グラフ設定</h2>
       <label>グラフタイトル</label>
@@ -303,6 +330,10 @@
           <input type="color" id="color1" value="#3182ce" />
           <label>点の色</label>
         </div>
+        <label class="check-row">
+          <input type="checkbox" id="curve1" />
+          近似曲線を表示（PCHIP）
+        </label>
       </div>
 
       <!-- Dataset 2 -->
@@ -319,6 +350,10 @@
           <input type="color" id="color2" value="#e53e3e" />
           <label>点の色</label>
         </div>
+        <label class="check-row">
+          <input type="checkbox" id="curve2" />
+          近似曲線を表示（PCHIP）
+        </label>
       </div>
     </div>
 
@@ -326,19 +361,17 @@
     <div class="panel">
       <h2>データ入力</h2>
 
-      <!-- Dataset selector -->
       <div class="ds-selector">
         <button class="ds-sel-btn active-ds1" id="selDs1">データセット 1（左軸）</button>
-        <button class="ds-sel-btn" id="selDs2">データセット 2（右軸）</button>
+        <button class="ds-sel-btn"            id="selDs2">データセット 2（右軸）</button>
       </div>
 
-      <!-- Mode tabs -->
       <div class="tab-bar">
         <button class="tab-btn active" data-tab="single">1件ずつ</button>
         <button class="tab-btn"        data-tab="bulk">一括入力</button>
       </div>
 
-      <!-- Single entry -->
+      <!-- Single -->
       <div class="tab-pane active" id="tab-single">
         <div class="row">
           <div>
@@ -355,7 +388,7 @@
         <button class="btn btn-ds1" id="addBtn">＋ データを追加</button>
       </div>
 
-      <!-- Bulk entry -->
+      <!-- Bulk -->
       <div class="tab-pane" id="tab-bulk">
         <p class="hint">
           1行に 1点。形式: <code>X,Y</code> または <code>X,Y,ラベル</code><br>
@@ -370,7 +403,7 @@
       </div>
     </div>
 
-    <!-- Data table -->
+    <!-- Table -->
     <div class="panel">
       <h2>データ一覧</h2>
       <div class="data-table-wrapper">
@@ -405,27 +438,99 @@
   let nextId = 1;
   let activeDs = 1;
 
+  // ---- PCHIP interpolation ----
+  function pchipSlopes(xs, ys) {
+    const n = xs.length;
+    const h = [], d = [];
+    for (let i = 0; i < n - 1; i++) {
+      h[i] = xs[i + 1] - xs[i];
+      d[i] = (ys[i + 1] - ys[i]) / h[i];
+    }
+    const m = new Array(n);
+    m[0] = d[0];
+    m[n - 1] = d[n - 2];
+    for (let i = 1; i < n - 1; i++) {
+      if (d[i - 1] * d[i] <= 0) {
+        m[i] = 0;
+      } else {
+        const w1 = 2 * h[i] + h[i - 1];
+        const w2 = h[i] + 2 * h[i - 1];
+        m[i] = (w1 + w2) / (w1 / d[i - 1] + w2 / d[i]);
+      }
+    }
+    return m;
+  }
+
+  function pchipEval(xs, ys, ms, t) {
+    let lo = 0, hi = xs.length - 2;
+    while (lo < hi) {
+      const mid = (lo + hi + 1) >> 1;
+      if (xs[mid] <= t) lo = mid; else hi = mid - 1;
+    }
+    const i = lo;
+    const h = xs[i + 1] - xs[i];
+    const u = (t - xs[i]) / h;
+    const u2 = u * u, u3 = u2 * u;
+    return (2*u3 - 3*u2 + 1) * ys[i]     +
+           (u3 - 2*u2 + u)   * h * ms[i] +
+           (-2*u3 + 3*u2)    * ys[i + 1] +
+           (u3 - u2)         * h * ms[i + 1];
+  }
+
+  function buildPchipCurve(pts) {
+    if (pts.length < 2) return [];
+    const sorted = [...pts].sort((a, b) => a.x - b.x);
+    const xs = sorted.map(p => p.x);
+    const ys = sorted.map(p => p.y);
+    const ms = pchipSlopes(xs, ys);
+    const N = 300;
+    const xMin = xs[0], xMax = xs[xs.length - 1];
+    return Array.from({ length: N + 1 }, (_, i) => {
+      const x = xMin + (xMax - xMin) * i / N;
+      return { x, y: pchipEval(xs, ys, ms, x) };
+    });
+  }
+
   // ---- Chart ----
   const ctx = document.getElementById('scatterChart').getContext('2d');
   const chart = new Chart(ctx, {
     type: 'scatter',
     data: {
       datasets: [
-        { label: 'データセット 1', data: [], yAxisID: 'y1', pointRadius: 6, pointHoverRadius: 8 },
-        { label: 'データセット 2', data: [], yAxisID: 'y2', pointRadius: 6, pointHoverRadius: 8 }
+        // 0: DS1 scatter
+        { label: 'データセット 1', data: [], yAxisID: 'y1', pointRadius: 4, pointHoverRadius: 6 },
+        // 1: DS2 scatter
+        { label: 'データセット 2', data: [], yAxisID: 'y2', pointRadius: 4, pointHoverRadius: 6 },
+        // 2: DS1 PCHIP line
+        { type: 'line', label: '_curve1', data: [], yAxisID: 'y1',
+          pointRadius: 0, borderWidth: 2, tension: 0, hidden: true },
+        // 3: DS2 PCHIP line
+        { type: 'line', label: '_curve2', data: [], yAxisID: 'y2',
+          pointRadius: 0, borderWidth: 2, tension: 0, hidden: true }
       ]
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
-        title: { display: true, text: '', font: { size: 16, weight: 'bold' }, color: '#2d3748' },
-        legend: { display: true, position: 'top' },
+        title: {
+          display: true, text: '',
+          font: { size: 16, weight: 'bold' }, color: '#2d3748'
+        },
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            // Hide PCHIP line datasets from legend
+            filter: item => !String(item.text).startsWith('_')
+          }
+        },
         tooltip: {
+          filter: item => item.datasetIndex < 2,
           callbacks: {
             label: function(c) {
               const dsIdx = c.datasetIndex + 1;
-              const pts = datasets[dsIdx];
-              const p = pts.find(p => p.x === c.parsed.x && p.y === c.parsed.y);
+              const p = datasets[dsIdx].find(p => p.x === c.parsed.x && p.y === c.parsed.y);
               const lbl = p && p.label ? ` [${p.label}]` : '';
               return `${c.dataset.label}: (${c.parsed.x}, ${c.parsed.y})${lbl}`;
             }
@@ -435,14 +540,12 @@
       scales: {
         x: { title: { display: true, text: '', font: { weight: '600' } } },
         y1: {
-          type: 'linear',
-          position: 'left',
+          type: 'linear', position: 'left',
           title: { display: true, text: '', font: { weight: '600' } },
           grid: { color: '#e2e8f0' }
         },
         y2: {
-          type: 'linear',
-          position: 'right',
+          type: 'linear', position: 'right',
           title: { display: true, text: '', font: { weight: '600' } },
           grid: { drawOnChartArea: false }
         }
@@ -455,7 +558,10 @@
     const c2 = document.getElementById('color2').value;
     const ds1Name = document.getElementById('ds1Name').value || 'データセット 1';
     const ds2Name = document.getElementById('ds2Name').value || 'データセット 2';
+    const showCurve1 = document.getElementById('curve1').checked;
+    const showCurve2 = document.getElementById('curve2').checked;
 
+    // Scatter datasets
     chart.data.datasets[0].data            = datasets[1].map(p => ({ x: p.x, y: p.y }));
     chart.data.datasets[0].label           = ds1Name;
     chart.data.datasets[0].backgroundColor = c1 + 'bb';
@@ -466,6 +572,16 @@
     chart.data.datasets[1].backgroundColor = c2 + 'bb';
     chart.data.datasets[1].borderColor     = c2;
 
+    // PCHIP curves
+    chart.data.datasets[2].data        = showCurve1 ? buildPchipCurve(datasets[1]) : [];
+    chart.data.datasets[2].borderColor = c1;
+    chart.data.datasets[2].hidden      = !showCurve1 || datasets[1].length < 2;
+
+    chart.data.datasets[3].data        = showCurve2 ? buildPchipCurve(datasets[2]) : [];
+    chart.data.datasets[3].borderColor = c2;
+    chart.data.datasets[3].hidden      = !showCurve2 || datasets[2].length < 2;
+
+    // Axes / title
     chart.options.plugins.title.text    = document.getElementById('chartTitle').value || '';
     chart.options.scales.x.title.text   = document.getElementById('xLabel').value || '';
     chart.options.scales.y1.title.text  = document.getElementById('y1Label').value || '';
@@ -478,10 +594,10 @@
 
   // ---- Table ----
   function refreshTable() {
-    const tbody  = document.getElementById('dataBody');
-    const table  = document.getElementById('dataTable');
-    const empty  = document.getElementById('emptyMsg');
-    const total  = datasets[1].length + datasets[2].length;
+    const tbody = document.getElementById('dataBody');
+    const table = document.getElementById('dataTable');
+    const empty = document.getElementById('emptyMsg');
+    const total = datasets[1].length + datasets[2].length;
 
     if (total === 0) {
       table.style.display = 'none';
@@ -497,21 +613,16 @@
 
     [[1, ds1Name], [2, ds2Name]].forEach(([dsNum, name]) => {
       if (datasets[dsNum].length === 0) return;
-      // Section header row
       const hdr = document.createElement('tr');
       hdr.className = 'section-label-row';
       hdr.innerHTML = `<td colspan="5">${name}（${dsNum === 1 ? '左' : '右'}軸）</td>`;
       tbody.appendChild(hdr);
-
       datasets[dsNum].forEach((p, i) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${i + 1}</td>
-          <td>${p.x}</td>
-          <td>${p.y}</td>
+          <td>${i + 1}</td><td>${p.x}</td><td>${p.y}</td>
           <td>${p.label || ''}</td>
-          <td><button class="btn btn-danger" data-ds="${dsNum}" data-id="${p.id}">削除</button></td>
-        `;
+          <td><button class="btn btn-danger" data-ds="${dsNum}" data-id="${p.id}">削除</button></td>`;
         tbody.appendChild(tr);
       });
     });
@@ -520,24 +631,11 @@
   // ---- Dataset selector ----
   function setActiveDs(n) {
     activeDs = n;
-    const addBtn  = document.getElementById('addBtn');
-    const bulkAdd = document.getElementById('bulkAddBtn');
-    const s1 = document.getElementById('selDs1');
-    const s2 = document.getElementById('selDs2');
-
-    if (n === 1) {
-      s1.className = 'ds-sel-btn active-ds1';
-      s2.className = 'ds-sel-btn';
-      addBtn.className  = 'btn btn-ds1';
-      bulkAdd.className = 'btn btn-ds1';
-    } else {
-      s1.className = 'ds-sel-btn';
-      s2.className = 'ds-sel-btn active-ds2';
-      addBtn.className  = 'btn btn-ds2';
-      bulkAdd.className = 'btn btn-ds2';
-    }
+    document.getElementById('selDs1').className = 'ds-sel-btn' + (n === 1 ? ' active-ds1' : '');
+    document.getElementById('selDs2').className = 'ds-sel-btn' + (n === 2 ? ' active-ds2' : '');
+    document.getElementById('addBtn').className  = `btn btn-ds${n}`;
+    document.getElementById('bulkAddBtn').className = `btn btn-ds${n}`;
   }
-
   document.getElementById('selDs1').addEventListener('click', () => setActiveDs(1));
   document.getElementById('selDs2').addEventListener('click', () => setActiveDs(2));
 
@@ -555,10 +653,9 @@
   document.getElementById('addBtn').addEventListener('click', () => {
     const xVal = document.getElementById('inputX').value.trim();
     const yVal = document.getElementById('inputY').value.trim();
-    if (xVal === '' || yVal === '') { alert('X 値と Y 値を入力してください。'); return; }
+    if (!xVal || !yVal) { alert('X 値と Y 値を入力してください。'); return; }
     const x = parseFloat(xVal), y = parseFloat(yVal);
     if (isNaN(x) || isNaN(y)) { alert('有効な数値を入力してください。'); return; }
-
     datasets[activeDs].push({ id: nextId++, x, y, label: document.getElementById('inputLabel').value.trim() });
     document.getElementById('inputX').value = '';
     document.getElementById('inputY').value = '';
@@ -566,7 +663,6 @@
     document.getElementById('inputX').focus();
     refreshTable(); refreshChart();
   });
-
   ['inputX', 'inputY', 'inputLabel'].forEach(id => {
     document.getElementById(id).addEventListener('keydown', e => {
       if (e.key === 'Enter') document.getElementById('addBtn').click();
@@ -609,18 +705,14 @@
   function showBulkResult(added, errors) {
     const el = document.getElementById('bulkResult');
     el.style.display = '';
-    if (errors.length === 0) {
-      el.className = 'bulk-result ok';
-      el.textContent = `${added.length} 件を追加しました。`;
-    } else {
-      el.className = 'bulk-result err';
-      el.textContent = `${added.length} 件追加。${errors.length} 行をスキップ（行番号: ${errors.join(', ')}）`;
-    }
+    el.className = errors.length === 0 ? 'bulk-result ok' : 'bulk-result err';
+    el.textContent = errors.length === 0
+      ? `${added.length} 件を追加しました。`
+      : `${added.length} 件追加。${errors.length} 行をスキップ（行番号: ${errors.join(', ')}）`;
   }
 
   document.getElementById('bulkAddBtn').addEventListener('click', () => {
-    const text = document.getElementById('bulkInput').value;
-    const { added, errors } = parseBulk(text);
+    const { added, errors } = parseBulk(document.getElementById('bulkInput').value);
     if (added.length === 0 && errors.length === 0) {
       const el = document.getElementById('bulkResult');
       el.className = 'bulk-result err'; el.textContent = 'データが入力されていません。'; el.style.display = '';
@@ -633,8 +725,7 @@
   });
 
   document.getElementById('bulkReplaceBtn').addEventListener('click', () => {
-    const text = document.getElementById('bulkInput').value;
-    const { added, errors } = parseBulk(text);
+    const { added, errors } = parseBulk(document.getElementById('bulkInput').value);
     if (added.length === 0) {
       const el = document.getElementById('bulkResult');
       el.className = 'bulk-result err';
@@ -647,13 +738,15 @@
     if (added.length > 0) document.getElementById('bulkInput').value = '';
   });
 
-  // ---- Live setting updates ----
+  // ---- Live updates ----
   ['chartTitle','xLabel','y1Label','y2Label','ds1Name','ds2Name','color1','color2'].forEach(id => {
     document.getElementById(id).addEventListener('input', refreshChart);
   });
-  // Also refresh table when dataset names change (affects section headers)
   ['ds1Name','ds2Name'].forEach(id => {
     document.getElementById(id).addEventListener('input', refreshTable);
+  });
+  ['curve1','curve2'].forEach(id => {
+    document.getElementById(id).addEventListener('change', refreshChart);
   });
 
   // ---- Download ----
@@ -666,11 +759,10 @@
 
   // ---- CSV Export ----
   document.getElementById('csvExportBtn').addEventListener('click', () => {
-    const total = datasets[1].length + datasets[2].length;
-    if (total === 0) { alert('エクスポートするデータがありません。'); return; }
+    if (datasets[1].length + datasets[2].length === 0) { alert('エクスポートするデータがありません。'); return; }
     const ds1Name = document.getElementById('ds1Name').value || 'データセット1';
     const ds2Name = document.getElementById('ds2Name').value || 'データセット2';
-    const rows = [['データセット', 'X', 'Y', 'ラベル']];
+    const rows = [['データセット','X','Y','ラベル']];
     datasets[1].forEach(p => rows.push([ds1Name, p.x, p.y, p.label]));
     datasets[2].forEach(p => rows.push([ds2Name, p.x, p.y, p.label]));
     const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
@@ -681,7 +773,6 @@
     a.click();
   });
 
-  // Initial render
   refreshChart();
 </script>
 </body>
