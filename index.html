@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>散布図作成ツール</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: #f0f4f8;
+      color: #2d3748;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #2b6cb0;
+      color: #fff;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    }
+
+    header h1 { font-size: 1.5rem; font-weight: 700; }
+
+    .container {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+    }
+
+    @media (max-width: 800px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    .panel h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #2b6cb0;
+      border-bottom: 2px solid #bee3f8;
+      padding-bottom: .4rem;
+    }
+
+    label {
+      display: block;
+      font-size: .82rem;
+      font-weight: 600;
+      margin-bottom: .25rem;
+      color: #4a5568;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: .45rem .7rem;
+      border: 1.5px solid #cbd5e0;
+      border-radius: 6px;
+      font-size: .9rem;
+      transition: border-color .2s;
+      margin-bottom: .75rem;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus {
+      outline: none;
+      border-color: #3182ce;
+    }
+
+    .row { display: flex; gap: .75rem; }
+    .row > div { flex: 1; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      padding: .5rem 1.1rem;
+      border: none;
+      border-radius: 6px;
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    .btn:active { transform: scale(.97); }
+
+    .btn-primary { background: #3182ce; color: #fff; width: 100%; margin-top: .25rem; }
+    .btn-primary:hover { background: #2b6cb0; }
+
+    .btn-danger { background: #fc8181; color: #fff; padding: .3rem .6rem; font-size: .78rem; }
+    .btn-danger:hover { background: #e53e3e; }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid #3182ce;
+      color: #3182ce;
+    }
+    .btn-outline:hover { background: #ebf8ff; }
+
+    .btn-success { background: #38a169; color: #fff; }
+    .btn-success:hover { background: #2f855a; }
+
+    /* Data table */
+    .data-table-wrapper {
+      max-height: 260px;
+      overflow-y: auto;
+      margin: .75rem 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    thead { position: sticky; top: 0; background: #ebf8ff; }
+    th, td {
+      padding: .4rem .6rem;
+      text-align: right;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    th { font-weight: 700; color: #2b6cb0; }
+    td:first-child, th:first-child { text-align: center; color: #718096; }
+    tbody tr:hover { background: #f7fafc; }
+
+    .empty-msg {
+      text-align: center;
+      padding: 1.5rem;
+      color: #a0aec0;
+      font-size: .85rem;
+    }
+
+    /* Chart area */
+    .chart-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      flex: 1;
+    }
+
+    canvas { width: 100% !important; }
+
+    .actions {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+
+    .section { margin-bottom: .75rem; }
+
+    /* Color picker */
+    input[type="color"] {
+      width: 38px; height: 38px;
+      border: 1.5px solid #cbd5e0;
+      border-radius: 6px;
+      padding: 2px;
+      cursor: pointer;
+      vertical-align: middle;
+    }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: .75rem;
+    }
+    .color-row label { margin: 0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>散布図作成ツール</h1>
+</header>
+
+<div class="container">
+  <!-- Left: control panel -->
+  <aside class="panel">
+
+    <h2>グラフ設定</h2>
+    <div class="section">
+      <label>グラフタイトル</label>
+      <input type="text" id="chartTitle" placeholder="例: 身長と体重の関係" />
+      <label>X 軸ラベル</label>
+      <input type="text" id="xLabel" placeholder="例: 身長 (cm)" />
+      <label>Y 軸ラベル</label>
+      <input type="text" id="yLabel" placeholder="例: 体重 (kg)" />
+    </div>
+
+    <div class="color-row">
+      <input type="color" id="dotColor" value="#3182ce" />
+      <label>点の色</label>
+    </div>
+
+    <h2>データ入力</h2>
+    <div class="row">
+      <div>
+        <label>X 値</label>
+        <input type="number" id="inputX" placeholder="0" step="any" />
+      </div>
+      <div>
+        <label>Y 値</label>
+        <input type="number" id="inputY" placeholder="0" step="any" />
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label>ラベル（任意）</label>
+        <input type="text" id="inputLabel" placeholder="例: サンプルA" />
+      </div>
+    </div>
+    <button class="btn btn-primary" id="addBtn">＋ データを追加</button>
+
+    <div class="data-table-wrapper" id="tableWrapper">
+      <div class="empty-msg" id="emptyMsg">データがありません</div>
+      <table id="dataTable" style="display:none">
+        <thead>
+          <tr>
+            <th>#</th><th>X</th><th>Y</th><th>ラベル</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="dataBody"></tbody>
+      </table>
+    </div>
+
+    <button class="btn btn-outline" id="clearBtn" style="width:100%;margin-top:.25rem">全て削除</button>
+
+  </aside>
+
+  <!-- Right: chart area -->
+  <div class="chart-panel">
+    <div class="chart-wrapper">
+      <canvas id="scatterChart"></canvas>
+    </div>
+    <div class="actions">
+      <button class="btn btn-success" id="downloadBtn">画像として保存</button>
+      <button class="btn btn-outline" id="csvExportBtn">CSV エクスポート</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---- State ----
+  let points = [];
+  let nextId = 1;
+
+  // ---- Chart ----
+  const ctx = document.getElementById('scatterChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets: [{ label: 'データ', data: [], pointRadius: 6, pointHoverRadius: 8 }] },
+    options: {
+      responsive: true,
+      plugins: {
+        title: { display: true, text: '', font: { size: 16, weight: 'bold' }, color: '#2d3748' },
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const p = points.find(p => p.x === ctx.parsed.x && p.y === ctx.parsed.y);
+              const lbl = p && p.label ? ` (${p.label})` : '';
+              return `(${ctx.parsed.x}, ${ctx.parsed.y})${lbl}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: '', font: { weight: '600' } } },
+        y: { title: { display: true, text: '', font: { weight: '600' } } }
+      }
+    }
+  });
+
+  function refreshChart() {
+    const color = document.getElementById('dotColor').value;
+    chart.data.datasets[0].data = points.map(p => ({ x: p.x, y: p.y }));
+    chart.data.datasets[0].backgroundColor = color + 'cc';
+    chart.data.datasets[0].borderColor = color;
+    chart.options.plugins.title.text = document.getElementById('chartTitle').value || '';
+    chart.options.scales.x.title.text = document.getElementById('xLabel').value || '';
+    chart.options.scales.y.title.text = document.getElementById('yLabel').value || '';
+    chart.update();
+  }
+
+  // ---- Table ----
+  function refreshTable() {
+    const tbody = document.getElementById('dataBody');
+    const table = document.getElementById('dataTable');
+    const empty = document.getElementById('emptyMsg');
+
+    tbody.innerHTML = '';
+    if (points.length === 0) {
+      table.style.display = 'none';
+      empty.style.display = '';
+      return;
+    }
+    table.style.display = '';
+    empty.style.display = 'none';
+
+    points.forEach((p, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${i + 1}</td>
+        <td>${p.x}</td>
+        <td>${p.y}</td>
+        <td>${p.label || ''}</td>
+        <td><button class="btn btn-danger" data-id="${p.id}">削除</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ---- Add ----
+  document.getElementById('addBtn').addEventListener('click', () => {
+    const xVal = document.getElementById('inputX').value.trim();
+    const yVal = document.getElementById('inputY').value.trim();
+    if (xVal === '' || yVal === '') { alert('X 値と Y 値を入力してください。'); return; }
+    const x = parseFloat(xVal);
+    const y = parseFloat(yVal);
+    if (isNaN(x) || isNaN(y)) { alert('有効な数値を入力してください。'); return; }
+
+    points.push({ id: nextId++, x, y, label: document.getElementById('inputLabel').value.trim() });
+    document.getElementById('inputX').value = '';
+    document.getElementById('inputY').value = '';
+    document.getElementById('inputLabel').value = '';
+    document.getElementById('inputX').focus();
+    refreshTable();
+    refreshChart();
+  });
+
+  // Enter key shortcut
+  ['inputX', 'inputY', 'inputLabel'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('addBtn').click();
+    });
+  });
+
+  // ---- Delete ----
+  document.getElementById('dataBody').addEventListener('click', e => {
+    if (!e.target.dataset.id) return;
+    const id = parseInt(e.target.dataset.id, 10);
+    points = points.filter(p => p.id !== id);
+    refreshTable();
+    refreshChart();
+  });
+
+  // ---- Clear all ----
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    if (points.length === 0) return;
+    if (confirm('全てのデータを削除しますか？')) {
+      points = [];
+      refreshTable();
+      refreshChart();
+    }
+  });
+
+  // ---- Live setting updates ----
+  ['chartTitle', 'xLabel', 'yLabel', 'dotColor'].forEach(id => {
+    document.getElementById(id).addEventListener('input', refreshChart);
+  });
+
+  // ---- Download ----
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    const a = document.createElement('a');
+    a.href = document.getElementById('scatterChart').toDataURL('image/png');
+    a.download = 'scatter_chart.png';
+    a.click();
+  });
+
+  // ---- CSV Export ----
+  document.getElementById('csvExportBtn').addEventListener('click', () => {
+    if (points.length === 0) { alert('エクスポートするデータがありません。'); return; }
+    const rows = [['X', 'Y', 'ラベル'], ...points.map(p => [p.x, p.y, p.label])];
+    const csv = rows.map(r => r.join(',')).join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'scatter_data.csv';
+    a.click();
+  });
+
+  // Initial render
+  refreshChart();
+</script>
+</body>
+</html>
